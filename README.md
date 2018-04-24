@@ -102,8 +102,6 @@ It is up to you to ask GOOD, clarifying questions.
 
 
 ## W7D6
-There will be a 30 minute discussion of the application.
-
-OR
+Due at 12PM
 
 We will send an email Sunday afternoon
