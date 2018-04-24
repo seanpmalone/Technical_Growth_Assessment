@@ -25,11 +25,18 @@ It is up to you to ask GOOD, clarifying questions.
 	- Be prepared to explain your choices though!
 	- Ex: React vs Angular vs Backbone
 
-### Bare Minimum
+## Bare Minimum
 1. Schema Design
 	- Flesh out your tables and the relationships
 	- Tables to consider: 
-		- FILLMEINTABLES
+		- Teams
+      - Users
+      - Channels
+      - Messages
+      - Attachments
+      - Stars
+      - Reactions
+      - Comments
 2. System Design
 3. Create a RESTful API
 	- You do not need to support every type of request, just whatever is pertinent to the application
@@ -52,7 +59,7 @@ It is up to you to ask GOOD, clarifying questions.
 	- I recommend an Ubuntu instance
 		- HINT: Your goal is to install Nodejs onto the deployed Ubuntu instance
 
-### Above and Beyond
+## Above and Beyond
 1. Write tests for your front end code
 2. Allow users to login with Google or Github
 3. Secure your routes
@@ -68,7 +75,7 @@ It is up to you to ask GOOD, clarifying questions.
 9. Stress test your system
 	- Look into artillery.io!
 
-### God Mode
+## God Mode
 1. Port your Slack Clone to Electron
 
 ## Expectations
