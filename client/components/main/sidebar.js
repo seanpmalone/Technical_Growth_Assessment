@@ -29,7 +29,7 @@ const SidebarExample = () => (
   <Router>
     <div>
     <div>
-      <div className="ui left fixed vertical menu inverted scrollable">
+      <div className="ui left fixed vertical menu inverted pusher scrollable">
         <div className="item">
           <h1>loose</h1>
         </div>

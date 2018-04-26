@@ -1,5 +1,5 @@
 import React from 'react'; 
-import {Redirect} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
 import { Image, Form, Grid, Button } from 'semantic-ui-react';
 import axios from 'axios';
 const Promise = require('bluebird');
@@ -15,8 +15,7 @@ class SignIn extends React.Component {
       password: '',
       fullName: '',
       newUsername: '',
-      newPassword: '',
-      isLoggedIn: false
+      newPassword: ''
     };
     this.handleCreateAccount = this.handleCreateAccount.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -50,9 +49,6 @@ class SignIn extends React.Component {
                 } else if (response.data.id) {
                     console.log('back from db', component.props);
                   component.props.setAuth(response.data.id);
-                  component.setState({
-                    isLoggedIn: true
-                  });
                 }
               })
               .catch(err => {
@@ -73,9 +69,6 @@ class SignIn extends React.Component {
           alert('Wrong username or password!');
         } else {
           component.props.setAuth(response.data.id);
-          component.setState({
-            isLoggedIn: true
-          });
           console.log('logged in and state updated!');
         }
       })
@@ -86,9 +79,10 @@ class SignIn extends React.Component {
   }
 
   render() {
-    if (this.state.isLoggedIn) {
+    console.log('render sign in page, are we logged in?',!!this.props.userId);
+    if (!!this.props.userId) {
       return (
-        <Redirect to={'/main'}/>
+        <Redirect to={'/'}/>
       );
     }
     return (
@@ -99,7 +93,7 @@ class SignIn extends React.Component {
               <Grid.Column width={8}>
                 <Form>
                   <Form.Field inline>
-                    <h1>loose</h1>
+                  <Link className='name header' to={'/'}>loose</Link>
                   </Form.Field>
                 </Form>
               </Grid.Column>
