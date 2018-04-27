@@ -90,7 +90,12 @@ class Team extends React.Component {
             userId: teamThis.props.id
           })
           .then(response => {
-              console.log('back from db again, user and team added to joined table', response.data);
+            axios.post('/channel', {
+              teamId: newTeamId,
+              channelName: 'General'
+            })
+          })
+          .then(response => {
           teamThis.props.setTeam(newTeamId);
           })
         }
@@ -108,7 +113,7 @@ class Team extends React.Component {
       return (
         <Switch>
         <Redirect to={'/main'}/>
-        <Route path='/main' render={() => <Main userId={this.state.id} teamId={this.props.teamId} logout={this.props.logout}/>} />
+        <Route path='/main' render={() => <Main userId={this.props.userId} teamId={this.props.teamId} logout={this.props.logout}/>} />
         </Switch>
       );
     }

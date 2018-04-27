@@ -24,6 +24,7 @@ CREATE TABLE teams (
 CREATE TABLE channels (
   `id` INT AUTO_INCREMENT,
   `channel_name` VARCHAR(255) NOT NULL,
+  `id_team` INT,
   PRIMARY KEY (`id`)
 );
 
@@ -37,13 +38,6 @@ CREATE TABLE user_team (
   `id` INT AUTO_INCREMENT,
   `id_user` INT,
   `id_team` INT,
-  PRIMARY KEY (`id`)
-);
-
-CREATE TABLE user_channel (
-  `id` INT AUTO_INCREMENT,
-  `id_user` INT,
-  `id_channel` INT,
   PRIMARY KEY (`id`)
 );
 

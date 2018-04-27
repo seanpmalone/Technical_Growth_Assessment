@@ -37,7 +37,7 @@ class SignIn extends React.Component {
               newUsername: this.state.newUsername,
               newPassword: hashedPassword,
               profilePicture:
-                'https://source.unsplash.com/300x300/?featured/?panda'
+                'https://mir-s3-cdn-cf.behance.net/project_modules/1400/f8a1cc8640707.56338041d9d6c.png'
             };
             let component = this;
             console.log('before axios req', newUserInfo);
