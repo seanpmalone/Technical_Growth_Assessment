@@ -10,10 +10,10 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: this.props.id,
-      teamId: ''
+      inviteUsername: ''
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.onChangeInvite = this.onChangeInvite.bind(this);
+    this.addUserToTeam = this.addUserToTeam.bind(this);
     this.fetchChannelFeed = this.fetchChannelFeed.bind(this);
     this.fetchDMFeed = this.fetchDMFeed.bind(this);
     console.log('RENDERING MAIN');
@@ -24,25 +24,39 @@ class Main extends React.Component {
 
   }
 
-  chosenTeam() {
-    return !!this.state.teamId;
-  }
-
-  setTeam(teamId) {
-    this.setState({teamId: teamId});
-  }
-
-  handleChange(obj) {
-    //change this into on change for channel/dm search
+  onChangeInvite(e) {
     this.setState({
-      friends: obj.data.filter((data) => {
-        return (data.id !== this.props.id && data.is_my_friend === '1');
-      }),
-      potentialFriends: obj.data.filter((data) => {
-        return (data.id !== this.props.id && data.is_my_friend === '0');
-      })
+      inviteUsername: e.target.value
     });
   }
+
+  addUserToTeam(event) {
+    var inviteThis = this;
+    axios.get('/invite', {
+      params: {
+        inviteUsername: inviteThis.state.inviteUsername
+      }
+    })
+      .then(response => {
+        if (response.data === 'user does not exist') {
+          alert('Sorry, but the user ' + teamThis.state.inviteUsername + ' does not exist.');
+        } else {
+          console.log('got user info from db for invite', response.data);
+          axios.post('/invite', {
+              inviteUserId: response.data.userId,
+              teamId: inviteThis.props.teamId
+          })
+          .then(response => {
+            alert('Success! ' + inviteThis.state.inviteUsername + ' was added to the team!');
+          })
+        }
+      })
+      .catch(err => {
+        console.log('Error from addUserToTeam', err);
+      });
+    event.preventDefault();
+  }
+
 
   fetchChannelFeed(channelID) {
     let thisIndex = this;
@@ -78,7 +92,7 @@ class Main extends React.Component {
     }
     return (
       <div>
-        <SidebarExample logout={this.props.logout}/>
+        <SidebarExample logout={this.props.logout} addUserToTeam={this.addUserToTeam} onChange={this.onChangeInvite.bind(this)}/>
       </div>
     );
   }

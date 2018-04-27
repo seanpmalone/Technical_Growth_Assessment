@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './sidebar.css';
 import { Image, Form, Grid, Button } from 'semantic-ui-react';
 
-const barThis = this;
-
 // Each logical "route" has two components, one for
 // the sidebar and one for the main area. We want to
 // render both of them in different places when the
@@ -34,12 +32,18 @@ const SidebarExample = (props) => (
     <div>
       <div className="ui left fixed vertical menu inverted pusher scrollable">
         <div className="item">
-          <h1>loose</h1>
-        </div>
-        <Link to="/profile"><a className="header item">username</a></Link>
-        <div className="header item" >CHANNELS</div>
-        <Link to="/"><a className="item">Home</a></Link>
-        <Link to="/bubblegum"><a className="item">Bubblegum</a></Link>
+            <h1>loose</h1>
+          </div>
+          <div className="item">
+            <Form className='STARTING-FORM' onSubmit={props.addUserToTeam} >
+                <Form.Input name='team name' size={'small'} placeholder='Username' width={14} onChange={props.onChange} />
+                <Button type='submit'>Invite User to Team</Button>
+            </Form>
+          </div>
+          <Link to="/profile"><a className="header item">username</a></Link>
+          <div className="header item" >CHANNELS</div>
+          <Link to="/"><a className="item">Home</a></Link>
+          <Link to="/bubblegum"><a className="item">Bubblegum</a></Link>
         <Link to="/shoelaces"><a className="item lastitem">Shoelaces</a></Link>
         <div className="header item" >DIRECT MESSAGES</div>
         <Link to="/"><a className="item">Home</a></Link>
