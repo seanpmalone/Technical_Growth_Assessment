@@ -84,14 +84,14 @@ class Team extends React.Component {
           alert('Sorry, but a team with that name already exists.');
         } else {
           console.log('new team created in db', response.data);
-          var newTeamId = '';
+          var newTeamId = response.data.insertId;
           axios.post('/teamuser', {
             teamId: newTeamId,
             userId: teamThis.props.id
           })
           .then(response => {
-              console.log('back from db again, user and team added to joined table');
-          teamThis.props.setTeam(response.data.teamId);
+              console.log('back from db again, user and team added to joined table', response.data);
+          teamThis.props.setTeam(newTeamId);
           })
         }
       })
@@ -151,7 +151,7 @@ class Team extends React.Component {
                   <Button type='submit'>Search Teams</Button>
                 </Grid.Row>
               </Form>
-    <Form className='user-login' onSubmit={this.handleLogin} >
+    <Form className='user-login' onSubmit={this.createTeam} >
     <Grid.Row className='create-account'>
                   <p className='splash'>...or create one</p>
                 </Grid.Row>

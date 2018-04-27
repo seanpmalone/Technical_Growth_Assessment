@@ -1,7 +1,7 @@
 //Mostly a blank page and side bar with a message "Click a channel or dm to get started!"
 import React from 'react';
 import axios from 'axios';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import SignIn from '../signIn/signin';
 import SidebarExample from './sidebar';
 import { Sidebar } from 'semantic-ui-react';
@@ -71,9 +71,14 @@ class Main extends React.Component {
   }
 
   render() {
+    if (!!!this.props.userId || !!!this.props.teamId) {
+      return (
+        <Redirect to={'/'}/>
+      );
+    }
     return (
       <div>
-        <SidebarExample />
+        <SidebarExample logout={this.props.logout}/>
       </div>
     );
   }

@@ -11,7 +11,7 @@ router.get('/signIn/:username/:password', account.signIn);
 
 router.get('/team', team.fetchTeam);
 router.get('/teamuser/', team.fetchTeamUser);
-// router.post('/team', team.saveTeam);
-// router.post('/teamuser', team.saveTeamUser);
+router.post('/team', team.saveTeam);
+router.post('/teamuser', team.saveTeamUser);
 
 module.exports = router;

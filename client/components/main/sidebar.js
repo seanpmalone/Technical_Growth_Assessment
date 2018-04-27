@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './sidebar.css';
+import { Image, Form, Grid, Button } from 'semantic-ui-react';
+
+const barThis = this;
 
 // Each logical "route" has two components, one for
 // the sidebar and one for the main area. We want to
@@ -25,7 +28,7 @@ const routes = [
   }
 ];
 
-const SidebarExample = () => (
+const SidebarExample = (props) => (
   <Router>
     <div>
     <div>
@@ -42,6 +45,7 @@ const SidebarExample = () => (
         <Link to="/"><a className="item">Home</a></Link>
         <Link to="/bubblegum"><a className="item">Bubblegum</a></Link>
         <Link to="/shoelaces"><a className="item">Shoelaces</a></Link>
+        <Button size={'mini'} onClick={props.logout}>Log out</Button>
         <div>
 
         {routes.map((route, index) => (
