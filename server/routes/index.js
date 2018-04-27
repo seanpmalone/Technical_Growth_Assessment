@@ -29,6 +29,7 @@ router.post('/comments', comments.saveComments);
 
 router.post('/channel', channel.saveChannel);
 router.get('/channel', channel.fetchChannels);
+router.get('/channelByName', channel.fetchChannelByName);
 
 router.get('/user', user.fetchUser);
 

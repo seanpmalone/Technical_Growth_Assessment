@@ -26,5 +26,20 @@ const fetchChannels = function (req, res) {
     });
 };
 
+const fetchChannelByName = function (req, res) {
+  db.query('SELECT * FROM channels WHERE channel_name = ?', [req.query.channelName], (err, data) => {
+      if (err) {
+        res.send(err);
+      } else {
+        if (data.length) {
+          res.send('channel already exists');
+        } else {
+          res.send(data);
+        }
+      }
+  });
+};
+
 exports.saveChannel = saveChannel;
 exports.fetchChannels = fetchChannels;
+exports.fetchChannelByName = fetchChannelByName;

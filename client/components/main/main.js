@@ -13,6 +13,7 @@ class Main extends React.Component {
     super(props);
     this.state = {
       inviteUsername: '',
+      createChannel: '',
       channelId: 1,
       dmId: '',
       channels: [],
@@ -28,6 +29,8 @@ class Main extends React.Component {
     this.fetchChannelList = this.fetchChannelList.bind(this);
     this.fetchMessageFeed = this.fetchMessageFeed.bind(this);
     this.changeChannelId = this.changeChannelId.bind(this);
+    this.onChangeCreateChannel = this.onChangeCreateChannel.bind(this);
+    this.createChannel = this.createChannel.bind(this);
     console.log('RENDERING MAIN', this.props);
   }
 
@@ -53,7 +56,7 @@ class Main extends React.Component {
     })
       .then(response => {
         if (response.data === 'user does not exist') {
-          alert('Sorry, but the user ' + teamThis.state.inviteUsername + ' does not exist.');
+          alert('Sorry, but the user ' + inviteThis.state.inviteUsername + ' does not exist.');
         } else {
           console.log('got user info from db for invite', response.data);
           axios.post('/invite', {
@@ -136,6 +139,40 @@ class Main extends React.Component {
     console.log('after change channel id', this.state.channelId);
   }
 
+  onChangeCreateChannel(e) {
+    this.setState({
+      createChannel: e.target.value
+    });
+  }
+
+  createChannel(event) {
+    var channelThis = this;
+    axios.get('/channelByName', {
+      params: {
+        channelName: channelThis.state.createChannel
+      }
+    })
+      .then(response => {
+        if (response.data === 'channel already exists') {
+          alert('Sorry, but the channel ' + channelThis.state.createChannel + ' already exists.');
+        } else {
+          console.log('got user info from db for channel creation', response.data);
+          axios.post('/channel', {
+              channelName: channelThis.state.createChannel,
+              teamId: channelThis.props.teamId
+          })
+          .then(response => {
+            alert('Success! ' + channelThis.state.createChannel + ' was created!');
+            this.fetchChannelList();
+          })
+        }
+      })
+      .catch(err => {
+        console.log('Error from addUserToTeam', err);
+      });
+    event.preventDefault();
+  }
+
   render() {
     console.log('channels',this.state.channels);
     if (!!!this.props.userId || !!!this.props.teamId) {
@@ -146,7 +183,7 @@ class Main extends React.Component {
     return (
       <div>
       <div>
-        <SidebarLoose username={this.state.username} channels={this.state.channels} dms={this.state.dms} logout={this.props.logout} addUserToTeam={this.addUserToTeam} onChange={this.onChangeInvite.bind(this)} changeChannelId={this.changeChannelId}/>
+        <SidebarLoose username={this.state.username} channels={this.state.channels} dms={this.state.dms} logout={this.props.logout} addUserToTeam={this.addUserToTeam} onChange={this.onChangeInvite.bind(this)} changeChannelId={this.changeChannelId} createChannel={this.createChannel} onChangeChannel={this.onChangeCreateChannel.bind(this)}/>
       </div>
       <div className='pusher'>
       <div className="ui top attached segment header">Channel: {this.state.channelName}</div>
