@@ -49,7 +49,7 @@ class App extends React.Component {
       .catch(err => {
         console.log('Error on logout:', err);
       });
-    this.setState({id: ''});
+    this.setState({id: '', teamId: ''});
   }
 
   isAuthenticated() {

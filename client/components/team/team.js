@@ -113,7 +113,7 @@ class Team extends React.Component {
       return (
         <Switch>
         <Redirect to={'/main'}/>
-        <Route path='/main' render={() => <Main userId={this.props.userId} teamId={this.props.teamId} logout={this.props.logout}/>} />
+        {/* <Route path='/main' render={() => <Main userId={this.props.userId} teamId={this.props.teamId} logout={this.props.logout}/>} /> */}
         </Switch>
       );
     }

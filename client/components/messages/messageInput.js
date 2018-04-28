@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Socketio from 'socket.io-client';
 
 class MessageInput extends React.Component {
   constructor(props) {
@@ -7,9 +8,18 @@ class MessageInput extends React.Component {
     this.state = {
       content: ''
     };
+    this.socket = Socketio('http://localhost:3000');
     this.onChangeMessage = this.onChangeMessage.bind(this);
     this.submitMessage = this.submitMessage.bind(this);
     console.log('props in message input', this.props);
+  }
+
+  componentDidMount () {
+    var component = this;
+    this.socket.on('returnmessage', function(message) {
+      console.log('message fom socket server', message);
+      component.props.fetchMessageFeed();
+    });
   }
 
   onChangeMessage (event) {
@@ -21,6 +31,11 @@ class MessageInput extends React.Component {
   submitMessage(event) {
     var component = this;
     event.preventDefault();
+    this.socket.emit('message', {
+      messageText: this.state.content,
+      userId: component.props.id,
+      channelId: component.props.channelId
+    });
     axios.post('/messageList', {
       messageText: this.state.content,
       userId: component.props.id,

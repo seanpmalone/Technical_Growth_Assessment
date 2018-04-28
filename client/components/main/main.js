@@ -14,7 +14,7 @@ class Main extends React.Component {
     this.state = {
       inviteUsername: '',
       createChannel: '',
-      channelId: 1,
+      channelId: '',
       dmId: '',
       channels: [],
       channelName: 'General',
@@ -39,6 +39,7 @@ class Main extends React.Component {
     this.fetchChannelList();
     this.fetchUserInfo();
     this.fetchMessageFeed();
+
   }
 
   onChangeInvite(e) {
@@ -86,7 +87,7 @@ class Main extends React.Component {
           username: response.data[0].username,
           profilePic: response.data[0].profilePic,
           fullName: response.data[0].fullName
-        });
+        }, function() {this.fetchMessageFeed();});
       })
       .catch(function (err) {
         console.log(err);
@@ -103,7 +104,8 @@ class Main extends React.Component {
       .then(function (response) {
         console.log('jfn jfv',response);
         thisIndex.setState({
-          channels: response.data
+          channels: response.data,
+          channelId: response.data[0].id
         });
       })
       .catch(function (err) {
@@ -146,6 +148,8 @@ class Main extends React.Component {
   }
 
   createChannel(event) {
+    // realized that you won't be able to create a channel with the same name as a channel in another team
+    // will have to add a teamId parameter to the get request to prevent this from happening
     var channelThis = this;
     axios.get('/channelByName', {
       params: {
@@ -162,7 +166,6 @@ class Main extends React.Component {
               teamId: channelThis.props.teamId
           })
           .then(response => {
-            alert('Success! ' + channelThis.state.createChannel + ' was created!');
             this.fetchChannelList();
           })
         }
