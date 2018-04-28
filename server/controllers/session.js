@@ -1,6 +1,5 @@
 const getSession = (req, res) => {
-  console.log('userId:', req.session);
-  res.status(200).send({id: req.session.userId, teamId: req.session.teamId});
+  res.status(200).send({ id: req.session.userId, teamId: req.session.teamId });
 };
 
 const logout = (req, res) => {

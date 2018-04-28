@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const account = require('../controllers/account');
-const session = require ('../controllers/session');
-const team = require ('../controllers/team');
-const invite = require ('../controllers/invite');
-const messages = require ('../controllers/messages');
+const session = require('../controllers/session');
+const team = require('../controllers/team');
+const invite = require('../controllers/invite');
+const messages = require('../controllers/messages');
 const comments = require('../controllers/comments');
-const channel = require ('../controllers/channel');
-const user = require ('../controllers/user');
+const channel = require('../controllers/channel');
+const user = require('../controllers/user');
 
 router.get('/userSession', session.getSession);
 router.get('/logout', session.logout);

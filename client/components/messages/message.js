@@ -13,14 +13,13 @@ class Message extends React.Component {
   }
 
   render() {
-    console.log('message', this.props.message);
     return (
       <div className="post">
         <div className="ui top attached segment">
           <div className="ui comments">
             <div className="comment">
               <a className="avatar">
-                <img src={this.props.message.profilePic}/>
+                <img src={this.props.message.profilePic} />
               </a>
               <div className="content">
                 <a className="author">{this.props.message.author}</a>
@@ -46,5 +45,5 @@ class Message extends React.Component {
     );
   }
 }
- 
+
 export default Message;

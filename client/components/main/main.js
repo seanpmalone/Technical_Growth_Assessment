@@ -1,4 +1,3 @@
-//Mostly a blank page and side bar with a message "Click a channel or dm to get started!"
 import React from 'react';
 import axios from 'axios';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -31,11 +30,9 @@ class Main extends React.Component {
     this.changeChannelId = this.changeChannelId.bind(this);
     this.onChangeCreateChannel = this.onChangeCreateChannel.bind(this);
     this.createChannel = this.createChannel.bind(this);
-    console.log('RENDERING MAIN', this.props);
   }
 
   componentDidMount() {
-    console.log('RENDERING MAIN');
     this.fetchChannelList();
     this.fetchUserInfo();
     this.fetchMessageFeed();
@@ -57,16 +54,15 @@ class Main extends React.Component {
     })
       .then(response => {
         if (response.data === 'user does not exist') {
-          alert('Sorry, but the user ' + inviteThis.state.inviteUsername + ' does not exist.');
+          alert('Sorry, but the user \'' + inviteThis.state.inviteUsername + '\' does not exist.');
         } else {
-          console.log('got user info from db for invite', response.data);
           axios.post('/invite', {
-              inviteUserId: response.data.userId,
-              teamId: inviteThis.props.teamId
+            inviteUserId: response.data.userId,
+            teamId: inviteThis.props.teamId
           })
-          .then(response => {
-            alert('Success! ' + inviteThis.state.inviteUsername + ' was added to the team!');
-          })
+            .then(response => {
+              alert('Success! \'' + inviteThis.state.inviteUsername + '\' was added to the team!');
+            })
         }
       })
       .catch(err => {
@@ -81,13 +77,13 @@ class Main extends React.Component {
       params: {
         userId: thisIndex.props.userId
       }
-      })
+    })
       .then(function (response) {
         thisIndex.setState({
           username: response.data[0].username,
           profilePic: response.data[0].profilePic,
           fullName: response.data[0].fullName
-        }, function() {this.fetchMessageFeed();});
+        }, function () { this.fetchMessageFeed(); });
       })
       .catch(function (err) {
         console.log(err);
@@ -100,9 +96,8 @@ class Main extends React.Component {
       params: {
         teamId: thisIndex.props.teamId
       }
-      })
+    })
       .then(function (response) {
-        console.log('jfn jfv',response);
         thisIndex.setState({
           channels: response.data,
           channelId: response.data[0].id
@@ -119,9 +114,8 @@ class Main extends React.Component {
       params: {
         channelId: thisIndex.state.channelId
       }
-      })
+    })
       .then(function (response) {
-        console.log('message response data', response.data);
         thisIndex.setState({
           messages: response.data
         });
@@ -132,13 +126,11 @@ class Main extends React.Component {
   }
 
   changeChannelId(newChannelId, newChannelName) {
-    console.log('change channel id', newChannelId);
     this.setState({
       channelId: newChannelId,
       channelName: newChannelName
 
-    }, function() {this.fetchMessageFeed();});
-    console.log('after change channel id', this.state.channelId);
+    }, function () { this.fetchMessageFeed(); });
   }
 
   onChangeCreateChannel(e) {
@@ -148,52 +140,48 @@ class Main extends React.Component {
   }
 
   createChannel(event) {
-    // realized that you won't be able to create a channel with the same name as a channel in another team
-    // will have to add a teamId parameter to the get request to prevent this from happening
     var channelThis = this;
     axios.get('/channelByName', {
       params: {
-        channelName: channelThis.state.createChannel
+        channelName: channelThis.state.createChannel,
+        teamId: channelThis.props.teamId
       }
     })
       .then(response => {
         if (response.data === 'channel already exists') {
-          alert('Sorry, but the channel ' + channelThis.state.createChannel + ' already exists.');
+          alert('Sorry, but the channel \'' + channelThis.state.createChannel + '\' already exists.');
         } else {
-          console.log('got user info from db for channel creation', response.data);
           axios.post('/channel', {
-              channelName: channelThis.state.createChannel,
-              teamId: channelThis.props.teamId
+            channelName: channelThis.state.createChannel,
+            teamId: channelThis.props.teamId
           })
-          .then(response => {
-            this.fetchChannelList();
-          })
+            .then(response => {
+              this.fetchChannelList();
+            })
         }
       })
       .catch(err => {
-        console.log('Error from addUserToTeam', err);
       });
     event.preventDefault();
   }
 
   render() {
-    console.log('channels',this.state.channels);
     if (!!!this.props.userId || !!!this.props.teamId) {
       return (
-        <Redirect to={'/'}/>
+        <Redirect to={'/'} />
       );
     }
     return (
       <div>
-      <div>
-        <SidebarLoose username={this.state.username} channels={this.state.channels} dms={this.state.dms} logout={this.props.logout} addUserToTeam={this.addUserToTeam} onChange={this.onChangeInvite.bind(this)} changeChannelId={this.changeChannelId} createChannel={this.createChannel} onChangeChannel={this.onChangeCreateChannel.bind(this)}/>
+        <div>
+          <SidebarLoose username={this.state.username} channels={this.state.channels} dms={this.state.dms} logout={this.props.logout} addUserToTeam={this.addUserToTeam} onChange={this.onChangeInvite.bind(this)} changeChannelId={this.changeChannelId} createChannel={this.createChannel} onChangeChannel={this.onChangeCreateChannel.bind(this)} />
+        </div>
+        <div className='pusher'>
+          <div className="ui top attached segment header">Channel: {this.state.channelName}</div>
+          <MessageInput id={this.props.userId} channelId={this.state.channelId} dmId={this.state.dmId} fetchMessageFeed={this.fetchMessageFeed} />
+          <MessageList id={this.props.userId} messages={this.state.messages} fetchMessageFeed={this.state.fetchMessageFeed} />
+        </div>
       </div>
-      <div className='pusher'>
-      <div className="ui top attached segment header">Channel: {this.state.channelName}</div>
-      <MessageInput id={this.props.userId} channelId={this.state.channelId} dmId={this.state.dmId} fetchMessageFeed={this.fetchMessageFeed}/>
-      <MessageList id={this.props.userId} messages={this.state.messages} fetchMessageFeed={this.state.fetchMessageFeed}/>
-    </div>
-    </div>
     );
   }
 }

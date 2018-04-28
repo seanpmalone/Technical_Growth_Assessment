@@ -11,7 +11,7 @@ const app = express();
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
   secret: 'super secret stuff',
@@ -20,8 +20,8 @@ app.use(session({
 app.use(express.static(__dirname + '/../client/dist'));
 app.use('/', router);
 
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'), function (err) {
     if (err) {
       res.status(500).send(err);
     }

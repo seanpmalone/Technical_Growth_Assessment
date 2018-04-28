@@ -103,7 +103,3 @@ CREATE TABLE channel_dm_stars (
   `id_dm` INT,
   PRIMARY KEY (`id`)
 );
-
-/*  Execute this file from the command line by typing:
- *    mysql -u root -p < /Users/seanmalone/Desktop/HR/Technical_Growth_Assessment/db/schema.sql
- *  to create the database and the tables.*/

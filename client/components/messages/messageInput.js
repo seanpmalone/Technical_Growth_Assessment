@@ -11,18 +11,16 @@ class MessageInput extends React.Component {
     this.socket = Socketio('http://localhost:3000');
     this.onChangeMessage = this.onChangeMessage.bind(this);
     this.submitMessage = this.submitMessage.bind(this);
-    console.log('props in message input', this.props);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     var component = this;
-    this.socket.on('returnmessage', function(message) {
-      console.log('message fom socket server', message);
+    this.socket.on('returnmessage', function (message) {
       component.props.fetchMessageFeed();
     });
   }
 
-  onChangeMessage (event) {
+  onChangeMessage(event) {
     this.setState({
       content: event.target.value
     });
@@ -40,8 +38,7 @@ class MessageInput extends React.Component {
       messageText: this.state.content,
       userId: component.props.id,
       channelId: component.props.channelId
-    }).then(function(response) {
-      console.log('saved message to db', response.data);
+    }).then(function (response) {
       component.setState({
         content: ''
       });
@@ -50,7 +47,7 @@ class MessageInput extends React.Component {
   }
 
   render() {
-    return (<div className= "ui segment">
+    return (<div className="ui segment">
       <form className="ui form">
         <div className="field">
           <label>Message</label>

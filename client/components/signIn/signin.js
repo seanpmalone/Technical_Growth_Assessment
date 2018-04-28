@@ -1,10 +1,11 @@
-import React from 'react'; 
-import {Redirect, Link} from 'react-router-dom';
+import React from 'react';
+import { Redirect, Link } from 'react-router-dom';
 import { Image, Form, Grid, Button } from 'semantic-ui-react';
 import axios from 'axios';
+import './signin.css';
+
 const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt-nodejs'));
-import './signin.css';
 
 
 class SignIn extends React.Component {
@@ -28,7 +29,7 @@ class SignIn extends React.Component {
   }
 
   handleCreateAccount(event) {
-    bcrypt.genSaltAsync(10) 
+    bcrypt.genSaltAsync(10)
       .then(salt => {
         bcrypt.hashAsync(this.state.newPassword, salt, null)
           .then(hashedPassword => {
@@ -40,14 +41,12 @@ class SignIn extends React.Component {
                 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/f8a1cc8640707.56338041d9d6c.png'
             };
             let component = this;
-            console.log('before axios req', newUserInfo);
             axios
               .post('/newAccount', newUserInfo)
               .then(response => {
                 if (response.data === 'exists') {
                   alert('Username is taken! Choose a new one.');
                 } else if (response.data.id) {
-                    console.log('back from db', component.props);
                   component.props.setAuth(response.data.id);
                 }
               })
@@ -61,7 +60,6 @@ class SignIn extends React.Component {
 
   handleLogin(event) {
     let component = this;
-    console.log('FROM LOGIN.JSX', this.state.username);
     axios
       .get(`/signIn/${this.state.username}/${this.state.password}`)
       .then(response => {
@@ -69,7 +67,6 @@ class SignIn extends React.Component {
           alert('Wrong username or password!');
         } else {
           component.props.setAuth(response.data.id);
-          console.log('logged in and state updated!');
         }
       })
       .catch(err => {
@@ -79,10 +76,9 @@ class SignIn extends React.Component {
   }
 
   render() {
-    console.log('render sign in page, are we logged in?',!!this.props.userId);
     if (!!this.props.userId) {
       return (
-        <Redirect to={'/'}/>
+        <Redirect to={'/'} />
       );
     }
     return (
@@ -93,7 +89,7 @@ class SignIn extends React.Component {
               <Grid.Column width={8}>
                 <Form>
                   <Form.Field inline>
-                  <Link className='name header' to={'/'}>loose</Link>
+                    <Link className='name header' to={'/'}>loose</Link>
                   </Form.Field>
                 </Form>
               </Grid.Column>
@@ -104,7 +100,7 @@ class SignIn extends React.Component {
                     <Form.Input name='password' size={'small'} type='password' placeholder='password' autoComplete='off' width={6} onChange={this.userAllInputFieldsChange.bind(this)} />
                     <Button type='submit'>Login</Button>
                   </Form.Group>
-                </Form> 
+                </Form>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -113,16 +109,16 @@ class SignIn extends React.Component {
           <Grid>
             <Grid.Column width={8} className='left-side-Login' >
               <div className='left-picture' >
-                <Image src='https://mir-s3-cdn-cf.behance.net/project_modules/1400/f8a1cc8640707.56338041d9d6c.png' size='massive' rounded/>
+                <Image src='https://mir-s3-cdn-cf.behance.net/project_modules/1400/f8a1cc8640707.56338041d9d6c.png' size='massive' rounded />
               </div>
             </Grid.Column>
             <Grid.Column width={8} >
-              <Form className='STARTING-FORM' onSubmit={this.handleCreateAccount} > 
+              <Form className='STARTING-FORM' onSubmit={this.handleCreateAccount} >
                 <Grid.Row className='create-account'>
                   <p className='splash'>Let's get into it</p>
                 </Grid.Row>
                 <Grid.Row className='full-name-row'>
-                  <Form.Input name='fullName' size={'small'} placeholder='Full name' width={14} onChange={this.userAllInputFieldsChange.bind(this)}/>
+                  <Form.Input name='fullName' size={'small'} placeholder='Full name' width={14} onChange={this.userAllInputFieldsChange.bind(this)} />
                 </Grid.Row>
                 <Grid.Row className='new-username-password'>
                   <Form.Group>
@@ -139,9 +135,9 @@ class SignIn extends React.Component {
                 <Grid.Row className='info'>
                   <Grid.Column width={2}>
                     <h6>
-            * By clicking Create Account, you agree to our Terms and that you have read our 
-            Data Policy, including our Cookie Use. You may receive SMS Notifications from 
-            loose and can opt out at any time.
+                      * By clicking Create Account, you agree to our Terms and that you have read our
+                      Data Policy, including our Cookie Use. You may receive SMS Notifications from
+                      loose and can opt out at any time.
                     </h6>
                   </Grid.Column>
                 </Grid.Row>
@@ -154,7 +150,7 @@ class SignIn extends React.Component {
         </div>
       </div>
     );
-  } 
+  }
 }
 
 export default SignIn;

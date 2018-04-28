@@ -2,7 +2,6 @@ const db = require('../db');
 
 const saveMessage = function (req, res) {
   const message = req.body;
-  console.log('saving message',message)
   db.query('INSERT INTO messages (message_text, id_author, id_channel, id_dm) VALUES (?, ?, ?, ?)',
     [message.messageText, message.userId, message.channelId, message.dmId],
     function (err, data) {
@@ -15,28 +14,27 @@ const saveMessage = function (req, res) {
 };
 
 const fetchMessages = function (req, res) {
-  console.log('beginning', req.query);
   db.query('SELECT messages.id, message_text, messages.created_at, users.full_name, users.profile_picture FROM messages ' +
-  'INNER JOIN users ON users.id = messages.id_author ' +
-  'WHERE id_channel = ? ' +
-  'ORDER BY messages.created_at DESC', [req.query.channelId], function (err, postData) {
-  if (err) {
-    res.send(err);
-  } else {
-    res.send(
-      postData.map(row => {
-        return {
-          id: row.id,
-          messageText: row.message_text,
-          createdAt: row.created_at,
-          author: row.full_name,
-          profilePic: row.profile_picture,
-          // comments: comments[row.id] || []
-        };
-      })
-    );
-  }
-});
+    'INNER JOIN users ON users.id = messages.id_author ' +
+    'WHERE id_channel = ? ' +
+    'ORDER BY messages.created_at DESC', [req.query.channelId], function (err, postData) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(
+          postData.map(row => {
+            return {
+              id: row.id,
+              messageText: row.message_text,
+              createdAt: row.created_at,
+              author: row.full_name,
+              profilePic: row.profile_picture,
+              // comments: comments[row.id] || []
+            };
+          })
+        );
+      }
+    });
 };
 
 // const fetchMessages = function (req, res) {
