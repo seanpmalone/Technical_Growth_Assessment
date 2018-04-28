@@ -1,3 +1,28 @@
+Welcome to 'loose'
+
+--Instructions to start the app--
+
+1. Create an .env file in the root directory with:
+"DB_HOST=localhost
+DB_USER=yourusername
+DB_PASS=yourpassword
+DB_DATABASE=loose
+PORT=4225"
+as the content.
+2. Run 'npm install' from your terminal in the root directory (you may need to install individual dependencies with 'npm install "dependency-name"').
+3. Set up the mysql database with the schema.sql file by running 'mysql -u root -p < PATHNAME/schema.sql'.
+4. Start the webpack by running 'npm run react-dev'.
+5. Start the local server by running 'npm run server-dev'. This server is hosted on port 4225.
+6. Start the socket server by running 'npm run socket'. This server is hosted on port 3000.
+7. Access the app by going to 'http://localhost:4225'.
+
+----
+
+Yet to be implemented: comments on messages, updating/accessing the user profile/profile picture, and direct messages.
+
+----
+
+
 # Technical Growth Assessment
 
 **Deadline: W7D6 12PM** 
